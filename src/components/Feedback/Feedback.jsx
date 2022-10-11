@@ -1,52 +1,47 @@
-import React from "react";
-import { Component } from "react";
+import { useState } from "react";
 import styles from './feedback.module.css';
 import Wrapper from "./Wrapper";
 import ActionsFeedback from "./ActionsFeedback";
 import ResultsFeedback from "./ResultsFeedback";
-import  Notification  from "./NotificationFeedback";
+import Notification from "./NotificationFeedback";
 
-export default class Feedback extends Component {
-    state = {
-        good: 0,
-        neutral: 0,
-        bad: 0,
-    
+
+export default function Feedback() {
+    const [good, setGood] = useState(0);
+    const [neutral, setNeutral] = useState(0);
+    const [bad, setBad] = useState(0);
+
+    const countTotal = () => {
+       return good + neutral + bad;
+    }
+    const countPercentage = () => {
+        const total = countTotal();
+        const result = (good / total) * 100;
+        return Number(result.toFixed(0));
     }
 
-    countTotal() {
-        const { good, neutral, bad } = this.state;
-        return good + neutral + bad;
+       const leaveFeedback = (typeFeedback) => {
+      
+           switch (typeFeedback) {
+               case "good":
+                   return setGood((prev) => prev + 1);
+                case "neutral":
+                   return setNeutral((prev) => prev + 1);
+                case "bad":
+                   return setBad((prev) => prev + 1);
+               default: return;
+           }
     }
 
-     countPercentage = () => {
-    const total = this.countTotal();
-    const value = this.state.good;
-    const result = (value / total) * 100;
-    return Number(result.toFixed(0));
-  }
- 
- 
-      leaveFeedback = (typeFeedback) => {
-        this.setState((prevState) => {
-            const value = prevState[typeFeedback];
-            return {
-                [typeFeedback]: value + 1
-            }
-        })
-    }
-
-
-    render() {
-        const { good, neutral, bad } = this.state;
-        const total = this.countTotal();
-        const positivePercent = this.countPercentage();
+    const total = countTotal();
+   
+        const positivePercent = countPercentage();
         
         return (
             <div className={styles.sections}>
                 <Wrapper title="Please leave feedback">
         
-                    <ActionsFeedback options={Object.keys(this.state)} leaveFeedback={this.leaveFeedback}/>
+                    <ActionsFeedback options={["good", "neutral", "bad"]} leaveFeedback={leaveFeedback}/>
                 
                    
                 </Wrapper>
@@ -65,4 +60,3 @@ export default class Feedback extends Component {
             
         )
     }
-}

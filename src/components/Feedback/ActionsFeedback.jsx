@@ -9,13 +9,7 @@ export default function ActionsFeedback({options, leaveFeedback}) {
           const name = option[0] + option.slice(1);
           return <button key={option} type='button' onClick={() => leaveFeedback(option)}>{name}</button>
         })}
-        {/* <button onClick={() => leaveFeedback("good")}>Good</button>
-  
-    
-        <button onClick={() => leaveFeedback("neutral")}>Neutral</button>
-          
-          
-        <button onClick={() => leaveFeedback("bad")}>Bad</button> */}
+        
     </div>
 </>
   )
